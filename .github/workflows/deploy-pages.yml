@@ -6,7 +6,7 @@ on:
       - master
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -36,8 +36,14 @@ jobs:
           cd out
           git init
           git checkout -b gh-pages
+
+          # 配置提交者信息
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
           git add -A
           git commit -m "Deploy to gh-pages: $SHA" || echo "No changes to commit"
 
-          # 强制推送到 gh-pages 分支（使用 GITHUB_TOKEN）
-          git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" gh-pages
+          # 推送到 gh-pages（使用 --force-with-lease 减少覆盖他人提交的风险）
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
+          git push --force-with-lease origin gh-pages
