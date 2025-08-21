@@ -18,14 +18,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v3
+      - name: Deploy to gh-pages branch
+        env:
+          REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -e
+          # 出站目录（修改为你的构建输出目录，如果需要）
+          PUBLISH_DIR=.
 
-      - name: Upload artifact for GitHub Pages
-        uses: actions/upload-pages-artifact@v2
-        with:
-          # 上传站点文件路径；如果你的静态站点输出到子目录（如 "public" 或 "dist"），把路径改为那个目录
-          path: .
+          # 准备临时目录并复制需要发布的文件（排除 .git 和工作流目录）
+          rm -rf out || true
+          mkdir out
+          rsync -av --delete --exclude='.git' --exclude='.github' --exclude='out' "$PUBLISH_DIR/" out/
 
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+          cd out
+          git init
+          git checkout -b gh-pages
+          git add -A
+          git commit -m "Deploy to gh-pages: $SHA" || echo "No changes to commit"
+
+          # 强制推送到 gh-pages 分支（使用 GITHUB_TOKEN）
+          git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" gh-pages
