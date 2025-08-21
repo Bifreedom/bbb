@@ -2,50 +2,41 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
+# 防止多次快速 push 触发并行部署冲突，新的运行会取消旧的
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
+    name: Build artifact
     runs-on: ubuntu-latest
-    name: Build and deploy
+    permissions:
+      contents: read
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
+      # 如需构建（例如 npm run build 输出到 dist），在此插入构建步骤并把 path 改成输出目录
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
 
-  - name: Deploy to gh-pages branch
-        env:
-          REPO: ${{ github.repository }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SHA: ${{ github.sha }}
-        run: |
-          set -e
-          # 出站目录（修改为你的构建输出目录，如果需要）
-          PUBLISH_DIR=.
-
-          # 准备临时目录并复制需要发布的文件（排除 .git 和工作流目录）
-          rm -rf out || true
-          mkdir out
-          rsync -av --delete --exclude='.git' --exclude='.github' --exclude='out' "$PUBLISH_DIR/" out/
-
-          cd out
-          git init
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
-
-          # 尝试获取远端 gh-pages（若不存在不报错）
-          git fetch origin gh-pages || true
-
-          # 创建/重置 gh-pages 分支指向当前工作目录内容
-          git checkout -B gh-pages
-          git add -A
-          git commit -m "Deploy to gh-pages: $SHA" || echo "No changes to commit"
-
-          # 强制推送（如有分支保护需允许 Actions 或改用 PAT）
-          git push -f origin gh-pages
+  deploy:
+    name: Deploy to Pages
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write      # 允许写入 Pages
+      id-token: write   # OIDC for deployment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
