@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy to gh-pages branch
+  - name: Deploy to gh-pages branch
         env:
           REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,15 +35,17 @@ jobs:
 
           cd out
           git init
-          git checkout -b gh-pages
-
-          # 配置提交者信息
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
 
+          # 尝试获取远端 gh-pages（若不存在不报错）
+          git fetch origin gh-pages || true
+
+          # 创建/重置 gh-pages 分支指向当前工作目录内容
+          git checkout -B gh-pages
           git add -A
           git commit -m "Deploy to gh-pages: $SHA" || echo "No changes to commit"
 
-          # 推送到 gh-pages（使用 --force-with-lease 减少覆盖他人提交的风险）
-          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
-          git push --force-with-lease origin gh-pages
+          # 强制推送（如有分支保护需允许 Actions 或改用 PAT）
+          git push -f origin gh-pages
