@@ -1,0 +1,80 @@
+data:text/html;charset=UTF-8,
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>变更流程可视化 | 甘特泳道图bbfc</title>
+<style>
+  body{margin:0;padding:20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:#f7f8fa;color:#333}
+  h2{margin:0 0 12px;font-size:20px}
+  .kanban{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  .col{border:1px solid #cfd8dc;border-radius:6px;background:#fff}
+  .col h3{margin:0 0 8px;padding:8px 12px;font-size:14px;font-weight:600;border-bottom:1px solid #cfd8dc;text-align:center}
+  .card{margin:6px 8px;padding:8px;border-radius:4px;font-size:12px;color:#fff}
+  .s1{background:#4f81bd} /* 申请 */
+  .s2{background:#9bbb59} /* 评审 */
+  .s3{background:#c0504d} /* 实施 */
+  .s4{background:#8064a2} /* 监控 */
+  .s5{background:#4bacc6} /* 记录与报告 */
+  .tag{margin-top:4px;font-size:10px;opacity:.9}
+  footer{margin-top:16px;font-size:11px;color:#666}
+</style>
+</head>
+<body>
+<h2>变更流程可视化 | 甘特泳道图</h2>
+<div class="kanban">
+  <!-- 1 变更申请 -->
+  <div class="col">
+    <h3>1. 变更申请</h3>
+    <div class="card s1">
+      CR-2025-07-26-001<br>新增电子签名验真
+      <div class="tag">申请人：张三 | 2025-07-26</div>
+    </div>
+    <div class="card s1">
+      CR-2025-07-25-012<br>提高并发上限
+      <div class="tag">申请人：李四 | 2025-07-25</div>
+    </div>
+  </div>
+
+  <!-- 2 变更评审 -->
+  <div class="col">
+    <h3>2. 变更评审</h3>
+    <div class="card s2">
+      CR-2025-07-24-008<br>报表格式调整
+      <div class="tag">评审人：王五 | 预计 2 天</div>
+    </div>
+  </div>
+
+  <!-- 3 变更实施 -->
+  <div class="col">
+    <h3>3. 变更实施</h3>
+    <div class="card s3">
+      CR-2025-07-22-005<br>短信双因子认证
+      <div class="tag">实施人：赵六 | 预计 3 天</div>
+    </div>
+  </div>
+
+  <!-- 4 变更监控 -->
+  <div class="col">
+    <h3>4. 变更监控</h3>
+    <div class="card s4">
+      CR-2025-07-20-002<br>GDPR 数据导出接口
+      <div class="tag">监控指标：错误率 &lt; 1%</div>
+    </div>
+  </div>
+
+  <!-- 5 变更记录与报告 -->
+  <div class="col">
+    <h3>5. 记录与报告</h3>
+    <div class="card s5">
+      CR-2025-07-18-001<br>同意书模板修复
+      <div class="tag">关闭日期：2025-07-23</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  依据变更管理五步流程绘制 | 可直接右键另存为图片
+</footer>
+</body>
+</html>
