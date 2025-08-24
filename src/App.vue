@@ -1,11 +1,15 @@
 <template>
   <main class="container">
-    <img alt="Vue logo" class="logo" src="https://vuejs.org/images/logo.png" />
-    <h1>你好，Vue + Vite + Router</h1>
+    <!-- <img alt="Vue logo" class="logo" src="https://vuejs.org/images/logo.png" />
+    <h1>你好，Vue + Vite + Router</h1> -->
     <nav class="nav">
       <RouterLink to="/">首页</RouterLink>
       <span>·</span>
       <RouterLink to="/about">关于</RouterLink>
+  <span>·</span>
+  <RouterLink to="/minesweeper">扫雷</RouterLink>
+  <span>·</span>
+  <RouterLink to="/messages">留言</RouterLink>
     </nav>
     <RouterView />
   </main>

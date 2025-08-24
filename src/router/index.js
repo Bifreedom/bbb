@@ -10,6 +10,16 @@ const routes = [
     path: '/about',
     name: 'about',
     component: () => import('../views/About.vue')
+  },
+  {
+    path: '/minesweeper',
+    name: 'minesweeper',
+    component: () => import('../views/Minesweeper.vue')
+  },
+  {
+    path: '/messages',
+    name: 'messages',
+    component: () => import('../views/Messages.vue')
   }
 ]
 
