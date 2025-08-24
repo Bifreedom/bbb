@@ -14,5 +14,9 @@ export default defineConfig(() => {
   return {
     plugins: [vue()],
     base,
+    build: {
+      outDir: 'docs',
+      emptyOutDir: true,
+    },
   }
 })
