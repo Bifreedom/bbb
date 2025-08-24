@@ -18,11 +18,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # 如需构建（例如 npm run build 输出到 dist），在此插入构建步骤并把 path 改成输出目录
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+          fi
+      - name: Build
+        run: npm run build
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ./dist
 
   deploy:
     name: Deploy to Pages
