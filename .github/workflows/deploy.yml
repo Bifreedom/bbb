@@ -37,13 +37,20 @@ jobs:
           GITHUB_ACTIONS: "true"
         run: npm run build
 
+      - name: List files (debug)
+        run: |
+          pwd
+          ls -la
+          echo "--- dist ---"
+          ls -la dist || true
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: ./dist
 
   deploy:
     environment:
