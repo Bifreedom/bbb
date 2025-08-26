@@ -5,6 +5,8 @@
     <div class="links">
       <RouterLink to="/about">前往 About →</RouterLink>
       <RouterLink to="/minesweeper">玩扫雷 →</RouterLink>
+  <RouterLink to="/gomoku">玩五子连珠 →</RouterLink>
+  <RouterLink to="/lines">玩五子连珠（Lines） →</RouterLink>
     </div>
   </section>
 </template>
