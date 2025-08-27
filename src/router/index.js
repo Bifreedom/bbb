@@ -30,6 +30,11 @@ const routes = [
     path: '/lines',
     name: 'lines',
     component: () => import('../views/Lines.vue')
+  },
+  {
+    path: '/xiangqi',
+    name: 'xiangqi',
+    component: () => import('../views/Xiangqi.vue')
   }
 ]
 

@@ -6,10 +6,12 @@
       <RouterLink to="/">首页</RouterLink>
       <span>·</span>
       <RouterLink to="/about">关于</RouterLink>
+      <span>·</span>
+      <RouterLink to="/minesweeper">扫雷</RouterLink>
+      <span>·</span>
+      <RouterLink to="/messages">留言</RouterLink>
   <span>·</span>
-  <RouterLink to="/minesweeper">扫雷</RouterLink>
-  <span>·</span>
-  <RouterLink to="/messages">留言</RouterLink>
+  <RouterLink to="/xiangqi">象棋</RouterLink>
     </nav>
     <RouterView />
   </main>
@@ -19,8 +21,27 @@
 </script>
 
 <style>
-  :root { color-scheme: light dark; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
-  .container { display: grid; place-items: center; min-height: 80vh; text-align: center; gap: 16px; }
-  .logo { width: 96px; height: 96px; }
-  .nav { display: flex; gap: 12px; align-items: center; }
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.container {
+  display: grid;
+  place-items: center;
+  min-height: 80vh;
+  text-align: center;
+  gap: 16px;
+}
+
+.logo {
+  width: 96px;
+  height: 96px;
+}
+
+.nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
 </style>
