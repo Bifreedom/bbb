@@ -626,7 +626,8 @@ function chooseAIMove(bd, side, level){
 watch(humanSide, () => { maybeAIMove() })
 onMounted(() => {
   const script = document.createElement('script')
-  script.src = '/xqbase-bridge.js'
+  // 使用相对路径，兼容 GitHub Pages 的二级路径部署
+  script.src = './xqbase-bridge.js'
   script.async = true
   document.head.appendChild(script)
 })

@@ -12,6 +12,24 @@
   let loaded = false
   let loadingPromise = null
 
+  // 依据当前脚本地址推导基础路径（支持 GitHub Pages 二级路径）
+  const scriptBase = (() => {
+    try {
+      const cur = document.currentScript
+      if (cur && cur.src) {
+        const u = new URL(cur.src, window.location.href)
+        // 去掉文件名，保留以 / 结尾的目录路径
+        const pathname = u.pathname.replace(/[^/]+$/, '')
+        return `${u.origin}${pathname}`
+      }
+      // 回退：基于 baseURI 或当前位置
+      const base = document.baseURI || `${location.origin}${location.pathname.replace(/[^/]*$/, '')}`
+      return base.endsWith('/') ? base : base + '/'
+    } catch (_) {
+      return '/'
+    }
+  })()
+
   function loadScript(src){
     return new Promise((resolve, reject) => {
       const s = document.createElement('script')
@@ -48,10 +66,10 @@
     if (loadingPromise) return loadingPromise
     loadingPromise = (async () => {
       // 严格按顺序加载
-      await loadScript('/xqwlight-master/JavaScript/position.js')
-      await loadScript('/xqwlight-master/JavaScript/search.js')
+  await loadScript(scriptBase + 'xqwlight-master/JavaScript/position.js')
+  await loadScript(scriptBase + 'xqwlight-master/JavaScript/search.js')
       // 可选：开局库
-      // await loadScript('/xqwlight-master/JavaScript/book.js')
+  // await loadScript(scriptBase + 'xqwlight-master/JavaScript/book.js')
       loaded = true
     })()
     return loadingPromise

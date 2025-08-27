@@ -6,13 +6,29 @@
 
 let engineReady = false
 
+function waitFor(predicate, timeout = 3000, interval = 50){
+  return new Promise(resolve => {
+    const start = Date.now()
+    const t = setInterval(() => {
+      try {
+        if (predicate()) { clearInterval(t); resolve(true); return }
+      } catch (_) {}
+      if (Date.now() - start >= timeout) { clearInterval(t); resolve(false) }
+    }, interval)
+  })
+}
+
 export async function initEngine() {
   if (engineReady) return true
   // 若页面上已注入 window.XQBASE 并具备 init 方法，则调用之
-  if (typeof window !== 'undefined' && window.XQBASE && typeof window.XQBASE.init === 'function') {
-    await window.XQBASE.init()
-    engineReady = true
-    return true
+  if (typeof window !== 'undefined') {
+    // 等待 bridge 脚本注入完成
+    await waitFor(() => !!(window.XQBASE && typeof window.XQBASE.init === 'function'), 2500, 50)
+    if (window.XQBASE && typeof window.XQBASE.init === 'function') {
+      await window.XQBASE.init()
+      engineReady = true
+      return true
+    }
   }
   // 回退：找不到引擎
   return false
